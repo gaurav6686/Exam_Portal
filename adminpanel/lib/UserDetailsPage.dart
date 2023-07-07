@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class UserDetailsPage extends StatefulWidget {
   final UserData user;
@@ -15,6 +16,8 @@ class UserDetailsPage extends StatefulWidget {
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
   String status = '';
+
+  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
   Future<void> updateStatus(String newStatus) async {
     String url;
@@ -99,7 +102,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                               ),
                               const SizedBox(height: 10),
                               Text(
-                                'Class: ${widget.user.classes}',
+                                'Class: ${widget.user.classValue}',
                                 style: const TextStyle(fontSize: 20),
                               ),
                               const SizedBox(height: 10),
@@ -107,7 +110,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                                 'Division: ${widget.user.division}',
                                 style: const TextStyle(fontSize: 20),
                               ),
-                               const SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 'Branch: ${widget.user.branch}',
                                 style: const TextStyle(fontSize: 20),
@@ -121,15 +124,17 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 255, 66, 0),
+                            color: Color.fromARGB(255, 255, 66, 0),
                           ),
                         ),
                         const SizedBox(height: 20),
                         Center(
-                          child: Text(
-                            'PDF: ${widget.user.pdf}',
-                            style: const TextStyle(fontSize: 12),
-                          ),
+                          child: Container(
+                  height: 600, // Adjust the height as needed
+                  child: SfPdfViewer.network(
+                    widget.user.pdf,
+                    key: _pdfViewerKey,
+                  ),),
                         ),
                         const SizedBox(height: 30),
                         const Text(
@@ -137,7 +142,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: const Color.fromARGB(255, 255, 66, 0),
+                            color: Color.fromARGB(255, 255, 66, 0),
                           ),
                         ),
                         const SizedBox(height: 20),

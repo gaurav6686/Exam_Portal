@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
   }
@@ -24,10 +26,11 @@ class UserData {
   final String name;
   final String mobileNo;
   final String branch;
-  final String classes;
+  final String classValue;
   final String division;
   final String photo;
   final String status;
+
 
   UserData({
     required this.id,
@@ -35,7 +38,7 @@ class UserData {
     required this.name,
     required this.mobileNo,
     required this.branch,
-    required this.classes,
+    required this.classValue,
     required this.division,
     required this.photo,
     this.status = '',
@@ -48,7 +51,7 @@ class UserData {
     name: json['name'] ?? '',
     mobileNo: json['mobileNo'] ?? '',
     branch: json['branch'] ?? '',
-    classes: json['classes'] ?? '',
+    classValue: json['classValue'] ?? '',
     division: json['division'] ?? '',
     photo: json['photo'] ?? '',
     status: json['status'] ?? '',
@@ -105,11 +108,11 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (selectedClass == 'CLASS') {
       return userList.where((user) => user.division == selectedDivi).toList();
     } else if (selectedDivi == 'DIVISION') {
-      return userList.where((user) => user.classes == selectedClass).toList();
+      return userList.where((user) => user.classValue == selectedClass).toList();
     } else {
       return userList
           .where((user) =>
-              user.classes == selectedClass && user.division == selectedDivi)
+              user.classValue == selectedClass && user.division == selectedDivi)
           .toList();
     }
   }
@@ -127,14 +130,13 @@ class _MyHomePageState extends State<MyHomePage> {
           return [];
         }
       } else {
-        throw Exception(
-            'Failed to load data. Status Code: ${response.statusCode}');
+        throw Exception('Failed to load data. Status code: ${response.statusCode}');
       }
     } catch (error) {
-      print('Error while fetching data: $error');
-      throw Exception('Failed to load data. $error');
+      throw Exception('Failed to load data. Error: $error');
     }
   }
+
 
   List<UserData> filterUserList(List<UserData> userList) {
     if (searchText.isEmpty &&
@@ -146,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
         final bool matchesSearchText =
             user.name.toLowerCase().contains(searchText.toLowerCase());
         final bool matchesClass =
-            selectedOption == 'CLASS' || user.classes == selectedOption;
+            selectedOption == 'CLASS' || user.classValue == selectedOption;
         final bool matchesDivision =
             selecteddivi == 'DIVISION' || user.division == selecteddivi;
 
@@ -451,7 +453,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               SizedBox(width: 10),
                                               Expanded(
                                                 child: Text(
-                                                  userData.classes,
+                                                  userData.classValue,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
