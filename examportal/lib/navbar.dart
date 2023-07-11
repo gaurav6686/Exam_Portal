@@ -34,7 +34,7 @@ class _NavbarState extends State<Navbar> {
   Future<void> fetchProfileData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.156.223:3000/profile/$userId'),
+        Uri.parse('http://192.168.122.223:3000/profile/$userId'),
         headers: {'Content-Type': 'application/json'},
       );
 
@@ -56,7 +56,7 @@ class _NavbarState extends State<Navbar> {
   Future<void> logout() async {
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.156.223:3000/user/logout'),
+        Uri.parse('http://192.168.122.223:3000/user/logout'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${widget.token}',

@@ -5,9 +5,13 @@ const cloudinary = require('cloudinary').v2;
 const fileUpload = require('express-fileupload')
 const user = require("./auth/signin");
 const User = require("./model/user");
+const cors = require('cors');
+
 
 const app = express()
 app.use(express.json())
+app.use(cors());
+
 
 mongoose.connect("mongodb+srv://Gauravd:gauravd@cluster0.hbhwc24.mongodb.net/", {
   useNewurlParser: true,
@@ -154,6 +158,8 @@ app.get('/profile/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch profile data' });
   }
 });
+
+
 
 
 app.post('/api/studentData', async (req, res) => {

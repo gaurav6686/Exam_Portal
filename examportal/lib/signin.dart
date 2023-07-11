@@ -31,7 +31,7 @@ class _SignINState extends State<SignIN> with SingleTickerProviderStateMixin {
     final username = _usernameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
-    final apiUrl = 'http://192.168.156.223:3000/user/signup';
+    final apiUrl = 'http://192.168.122.223:3000/user/signup';
     try {
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -60,7 +60,7 @@ class _SignINState extends State<SignIN> with SingleTickerProviderStateMixin {
   Future<void> signIn() async {
     final email = _emailController.text;
     final password = _passwordController.text;
-    final apiUrl = 'http://192.168.156.223:3000/user/login';
+    final apiUrl = 'http://192.168.122.223:3000/user/login';
 
     try {
       final response = await http.post(
@@ -94,7 +94,7 @@ class _SignINState extends State<SignIN> with SingleTickerProviderStateMixin {
   // Future<void> signIn() async {
   //   final email = _emailController.text;
   //   final password = _passwordController.text;
-  //   final apiUrl = 'http://192.168.156.223:3000/user/login';
+  //   final apiUrl = 'http://192.168.122.223:3000/user/login';
 
   //   try {
   //     final response = await http.post(

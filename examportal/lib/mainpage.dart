@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.156.223:3000/api/action'),
+      Uri.parse('http://192.168.122.223:3000/api/action'),
     );
     request.headers['Content-Type'] = 'application/json';
 

@@ -1,14 +1,21 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'homepage.dart';
 
 class UserDetailsPage extends StatefulWidget {
   final UserData user;
   final String studentId;
+  final token;
+  final userId;
 
-  UserDetailsPage({required this.user, required this.studentId});
+  UserDetailsPage(
+      {required this.user,
+      required this.studentId,
+      @required this.token,
+      @required this.userId});
 
   @override
   _UserDetailsPageState createState() => _UserDetailsPageState();
@@ -16,29 +23,35 @@ class UserDetailsPage extends StatefulWidget {
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
   String status = '';
+  late String userId;
+
+
+  @override
+  void initState() {
+    super.initState();
+    Map<String, dynamic> jwtDecodeToken = JwtDecoder.decode(widget.token);
+    userId = jwtDecodeToken['id'];
+  }
 
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
   Future<void> updateStatus(String newStatus) async {
     String url;
     if (newStatus == 'reject') {
-      url = 'http://192.168.1.12:3000/user/${widget.studentId}/reject';
+      url = 'http://192.168.156.223:5000/user/${widget.studentId}/reject';
     } else if (newStatus == 'accept') {
-      url = 'http://192.168.1.12:3000/user/${widget.studentId}/accept';
+      url = 'http://192.168.156.223:5000/user/${widget.studentId}/accept';
     } else {
       return;
     }
-
     try {
       final response = await http.put(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
       );
-
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         print(responseData);
-
         setState(() {
           status = newStatus;
         });
@@ -49,6 +62,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       print('Error: $error');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +144,12 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                         const SizedBox(height: 20),
                         Center(
                           child: Container(
-                  height: 600, // Adjust the height as needed
-                  child: SfPdfViewer.network(
-                    widget.user.pdf,
-                    key: _pdfViewerKey,
-                  ),),
+                            height: 600, // Adjust the height as needed
+                            child: SfPdfViewer.network(
+                              widget.user.pdf,
+                              key: _pdfViewerKey,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 30),
                         const Text(

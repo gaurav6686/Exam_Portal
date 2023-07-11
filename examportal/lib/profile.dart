@@ -36,7 +36,7 @@ class _ProfileState extends State<Profile> {
   Future<void> fetchUserStatus(userId) async {
   try {
     var response = await http.post(
-      Uri.parse('http://192.168.156.223:3000/api/studentData'),
+      Uri.parse('http://192.168.122.223:3000/api/studentData'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'userId': userId}),
     );
@@ -60,7 +60,7 @@ class _ProfileState extends State<Profile> {
   Future<void> fetchProfileData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.156.223:3000/profile/$userId'),
+        Uri.parse('http://192.168.122.223:3000/profile/$userId'),
         headers: {'Content-Type': 'application/json'},
       );
 
